@@ -1,11 +1,11 @@
-import { TodoRepository } from "../repositories/todo.repo";
+import { ITodoRepository } from "../repositories/todo.repo.interface";
 import * as todoDto from "../types/todo.dto";
 
 export class TodoService {
-  private todoRepo: TodoRepository;
+  private todoRepo: ITodoRepository;
 
-  constructor() {
-    this.todoRepo = new TodoRepository();
+  constructor(todoRepo: ITodoRepository) {
+    this.todoRepo = todoRepo;
   }
 
   getAll() {
