@@ -1,5 +1,6 @@
 import { IUserRepository } from "../repositories/user.repo.interface";
-import { LoginDto, RegisterDto } from "../types/auth.dto";
+import { LoginDto, RegisterDto, AuthResponse } from "../types/auth.dto";
+import { hashPassword, verifyPassword, generateToken } from "../utils/auth";
 
 export class UserService {
   private userRepo: IUserRepository;
@@ -8,7 +9,7 @@ export class UserService {
     this.userRepo = userRepo;
   }
 
-  async register(data: RegisterDto) {
+  async register(data: RegisterDto): Promise<AuthResponse> {
     const { name, email, password } = data;
 
     const existingUser = await this.userRepo.findByEmail(email);
@@ -19,15 +20,27 @@ export class UserService {
     if (password.length < 6 || password.length > 100)
       throw new Error("Password must be between 6 and 100 characters");
 
-    return this.userRepo.create({ name, email, password });
+    const hashedPassword = await hashPassword(password);
+    const user = await this.userRepo.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    const token = generateToken(user.id);
+    return { token, user: { id: user.id, name: user.name, email: user.email } };
   }
 
-  async login(data: LoginDto) {
+  async login(data: LoginDto): Promise<AuthResponse> {
     const { email, password } = data;
 
     const user = await this.userRepo.findByEmail(email);
     if (!user) throw new Error("Invalid email or password");
 
-    return user;
+    const isValid = await verifyPassword(password, user.password);
+    if (!isValid) throw new Error("Invalid email or password");
+
+    const token = generateToken(user.id);
+    return { token, user: { id: user.id, name: user.name, email: user.email } };
   }
 }

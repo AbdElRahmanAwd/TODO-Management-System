@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import todoRouter from "./routes/todo.route";
+import authRouter from "./routes/auth.route";
+import { authMiddleware } from "./middleware/auth.middleware";
 
 export const app = express();
 
@@ -15,4 +17,5 @@ app.get("/health", (req, res) => {
   res.send("Hello, World!");
 });
 
-app.use("/todos", todoRouter);
+app.use("/auth", authRouter);
+app.use("/todos", authMiddleware, todoRouter);
