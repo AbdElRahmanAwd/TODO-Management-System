@@ -4,8 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { TodoStatus } from "../enums/todo-status.enum";
+import { User } from "./user..entity";
 
 @Entity({ name: "todos" })
 export class Todo {
@@ -18,11 +21,15 @@ export class Todo {
   @Column({ type: "text", nullable: true })
   description?: string;
 
+  @ManyToOne(() => User, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "user_id" })
+  user!: User;
+
   @Column({
     type: "enum",
     enum: TodoStatus,
     enumName: "todo_status",
-    default: TodoStatus.PENDING,
+    default: TodoStatus.TODO,
   })
   status!: TodoStatus;
 
