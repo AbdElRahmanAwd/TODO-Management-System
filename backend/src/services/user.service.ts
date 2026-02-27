@@ -31,6 +31,12 @@ export class UserService {
     return { token, user: { id: user.id, name: user.name, email: user.email } };
   }
 
+  async getMe(userId: number) {
+    const user = await this.userRepo.findById(userId);
+    if (!user) throw new Error("User not found");
+    return { id: user.id, name: user.name, email: user.email };
+  }
+
   async login(data: LoginDto): Promise<AuthResponse> {
     const { email, password } = data;
 

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
 import { UserRepository } from "../repositories/user.repo";
 import { UserService } from "../services/user.service";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 const authRouter = Router();
 const userRepo = new UserRepository();
@@ -10,6 +11,6 @@ const authController = new AuthController(userService);
 
 authRouter.post("/register", authController.register);
 authRouter.post("/login", authController.login);
+authRouter.get("/me", authMiddleware, authController.getMe);
 
 export default authRouter;
-

@@ -14,6 +14,10 @@ export class UserRepository implements IUserRepository {
     return this.repo.findOne({ where: { email } });
   }
 
+  findById(id: number) {
+    return this.repo.findOne({ where: { id } });
+  }
+
   create(data: Pick<User, "name" | "email" | "password">) {
     const user = this.repo.create(data);
     return this.repo.save(user);
