@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+import { Todo } from "../entities/todo.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -10,5 +11,5 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [],
+  entities: [Todo],
 });
