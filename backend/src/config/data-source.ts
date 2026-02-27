@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Todo } from "../entities/todo.entity";
+import { User } from "../entities/user.entity";
 
 const isProduction = process.env.ENV === "production";
 
@@ -17,5 +18,5 @@ export const AppDataSource = new DataSource({
       }),
   synchronize: !isProduction,
   logging: false,
-  entities: [Todo],
+  entities: [Todo, User],
 });

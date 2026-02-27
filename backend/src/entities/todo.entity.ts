@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from "typeorm";
 import { TodoStatus } from "../enums/todo-status.enum";
-import { User } from "./user..entity";
+import { User } from "./user.entity";
 
 @Entity({ name: "todos" })
 export class Todo {
