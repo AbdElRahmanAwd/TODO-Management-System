@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "primereact/button";
+import { SelectButton } from "primereact/selectbutton";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { ProgressSpinner } from "primereact/progressspinner";
 import {
@@ -9,10 +10,21 @@ import {
   useUpdateTodoStatusMutation,
   useDeleteTodoMutation,
 } from "../api/todosApi";
-import type { Todo, TodoStatus } from "../types/todo.type";
+import { TodoStatus } from "../types/todo.type";
+import type { Todo } from "../types/todo.type";
+import { TODO_STATUS_CONFIG } from "../config/common/todoStatus";
 import TaskList from "../features/tasks/TaskList";
 import TaskFormDialog from "../features/tasks/TaskFormDialog";
 import type { TaskFormValues } from "../features/tasks/TaskFormDialog";
+import { Toast } from "primereact/toast";
+
+const FILTER_OPTIONS = [
+  { label: "All", value: null },
+  ...Object.values(TODO_STATUS_CONFIG).map((c) => ({
+    label: c.label,
+    value: c.value,
+  })),
+];
 
 export default function Tasks() {
   const { data: todos = [], isLoading, isError } = useGetTodosQuery();
@@ -20,9 +32,15 @@ export default function Tasks() {
   const [updateTodo, { isLoading: isUpdating }] = useUpdateTodoMutation();
   const [updateTodoStatus] = useUpdateTodoStatusMutation();
   const [deleteTodo] = useDeleteTodoMutation();
+  const toast = useRef<Toast>(null);
 
   const [showCreate, setShowCreate] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+  const [statusFilter, setStatusFilter] = useState<TodoStatus | null>(null);
+
+  const filteredTodos = statusFilter
+    ? todos.filter((t) => t.status === statusFilter)
+    : todos;
 
   const handleCreate = async (values: TaskFormValues) => {
     await createTodo(values).unwrap();
@@ -34,10 +52,22 @@ export default function Tasks() {
 
     await updateTodo({ id: editingTodo.id, data: values }).unwrap();
     setEditingTodo(null);
+    toast.current?.show({
+      severity: "success",
+      summary: "Task Updated",
+      style: { width: "fit-content", marginTop: "3rem" },
+      closable: false,
+    });
   };
 
   const handleStatusChange = async (todo: Todo, status: TodoStatus) => {
     await updateTodoStatus({ id: todo.id, data: { status } }).unwrap();
+    toast.current?.show({
+      severity: status === TodoStatus.COMPLETED ? "success" : "info",
+      summary: `Task marked as ${TODO_STATUS_CONFIG[status].label}`,
+      style: { width: "fit-content", marginTop: "3rem" },
+      closable: false,
+    });
   };
 
   const handleDelete = (todo: Todo) => {
@@ -48,6 +78,12 @@ export default function Tasks() {
       acceptClassName: "p-button-danger",
       accept: async () => {
         await deleteTodo(todo.id).unwrap();
+        toast.current?.show({
+          severity: "success",
+          summary: "Task Deleted",
+          style: { width: "fit-content", marginTop: "3rem" },
+          closable: false,
+        });
       },
     });
   };
@@ -94,8 +130,17 @@ export default function Tasks() {
           />
         </div>
 
+        <div className="mb-3">
+          <SelectButton
+            value={statusFilter}
+            options={FILTER_OPTIONS}
+            onChange={(e) => setStatusFilter(e.value as TodoStatus | null)}
+            allowEmpty={false}
+          />
+        </div>
+
         <TaskList
-          todos={todos}
+          todos={filteredTodos}
           onEdit={setEditingTodo}
           onDelete={handleDelete}
           onStatusChange={handleStatusChange}
@@ -122,6 +167,8 @@ export default function Tasks() {
           loading={isUpdating}
         />
       </div>
+
+      <Toast ref={toast} position="top-left" />
     </div>
   );
 }

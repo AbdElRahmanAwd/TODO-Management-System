@@ -3,6 +3,9 @@ import { Tag } from "primereact/tag";
 import { TodoStatus } from "../../types/todo.type";
 import type { Todo } from "../../types/todo.type";
 import { TODO_STATUS_CONFIG } from "../../config/common/todoStatus";
+import { Sidebar } from "primereact/sidebar";
+import { useState } from "react";
+import { format } from "date-fns";
 
 const STATUS_CYCLE: TodoStatus[] = [
   TodoStatus.TODO,
@@ -28,6 +31,8 @@ export default function TaskCard({
   onDelete,
   onStatusChange,
 }: TaskCardProps) {
+  const [visibleSidebar, setVisibleSidebar] = useState(false);
+
   const isCompleted = todo.status === TodoStatus.COMPLETED;
   const statusConfig = TODO_STATUS_CONFIG[todo.status];
   const nextStatus = getNextStatus(todo.status);
@@ -48,7 +53,9 @@ export default function TaskCard({
             style={{
               textDecoration: isCompleted ? "line-through" : "none",
               opacity: isCompleted ? 0.6 : 1,
+              cursor: "pointer",
             }}
+            onClick={() => setVisibleSidebar(true)}
           >
             {todo.name}
           </span>
@@ -96,6 +103,50 @@ export default function TaskCard({
           onClick={() => onDelete(todo)}
         />
       </div>
+
+      <Sidebar
+        visible={visibleSidebar}
+        position="right"
+        onHide={() => setVisibleSidebar(false)}
+        className="w-full md:w-30rem lg:w-70rem"
+      >
+        <h2 className="fw-bold mb-4">{todo.name}</h2>
+
+        <div className="d-flex flex-column gap-3">
+          <div>
+            <label className="text-muted small d-block mb-1">Status</label>
+            <Tag
+              value={statusConfig.label}
+              severity={statusConfig.severity}
+              icon={statusConfig.icon as string}
+              rounded
+            />
+          </div>
+
+          <div>
+            <label className="text-muted small d-block mb-1">Description</label>
+            <p className="mb-0">
+              {todo.description || "No description provided."}
+            </p>
+          </div>
+
+          <div>
+            <label className="text-muted small d-block mb-1">Created</label>
+            <p className="mb-0">
+              {format(new Date(todo.createdAt), "MMMM d, yyyy 'at' hh:mm a")}
+            </p>
+          </div>
+
+          <div>
+            <label className="text-muted small d-block mb-1">
+              Last Updated
+            </label>
+            <p className="mb-0">
+              {format(new Date(todo.updatedAt), "MMMM d, yyyy 'at' hh:mm a")}
+            </p>
+          </div>
+        </div>
+      </Sidebar>
     </div>
   );
 }
