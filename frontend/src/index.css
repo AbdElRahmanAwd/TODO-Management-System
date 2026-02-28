@@ -17,3 +17,47 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* ── Custom Theme Colors ── */
+
+/* Light theme (default) */
+[data-bs-theme="light"] {
+  --app-primary: #4f46e5;
+  --app-primary-hover: #4338ca;
+  --app-secondary: #6b7280;
+  --app-secondary-hover: #4b5563;
+  --app-success: #10b981;
+  --app-danger: #ef4444;
+  --app-warning: #f59e0b;
+  --app-info: #3b82f6;
+  --app-bg: #f8f9fa;
+  --app-surface: #ffffff;
+  --app-text: #1f2937;
+  --app-text-muted: #6b7280;
+  --app-border: #e5e7eb;
+}
+
+/* Dark theme */
+[data-bs-theme="dark"] {
+  --app-primary: #818cf8;
+  --app-primary-hover: #6366f1;
+  --app-secondary: #9ca3af;
+  --app-secondary-hover: #d1d5db;
+  --app-success: #34d399;
+  --app-danger: #f87171;
+  --app-warning: #fbbf24;
+  --app-info: #60a5fa;
+  --app-bg: #111827;
+  --app-surface: #1f2937;
+  --app-text: #f9fafb;
+  --app-text-muted: #9ca3af;
+  --app-border: #374151;
+}
+
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}

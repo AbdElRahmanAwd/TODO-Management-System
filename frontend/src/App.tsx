@@ -1,14 +1,8 @@
-import api from "./config/axios";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router/index.tsx";
 
 function App() {
-  api.get("/health").then((response) => {
-    console.log("API Health Check:", response.data);
-  });
-  return (
-    <div className="card-body text-center">
-      <h1>TODO APP</h1>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
