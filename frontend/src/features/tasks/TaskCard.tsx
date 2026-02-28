@@ -78,6 +78,7 @@ export default function TaskCard({
           rounded
           severity="secondary"
           size="small"
+          hidden={isCompleted}
           tooltip={`Mark as ${nextLabel}`}
           tooltipOptions={{ position: "top" }}
           onClick={() => onStatusChange(todo, nextStatus)}
