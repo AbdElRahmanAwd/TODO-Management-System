@@ -6,23 +6,11 @@ import { TODO_STATUS_CONFIG } from "../../config/common/todoStatus";
 import { Sidebar } from "primereact/sidebar";
 import { useState } from "react";
 import { format } from "date-fns";
+import type { TaskProps } from "./types/task.type";
+import { getNextStatus } from "../../utils/status";
 
-const STATUS_CYCLE: TodoStatus[] = [
-  TodoStatus.TODO,
-  TodoStatus.IN_PROGRESS,
-  TodoStatus.COMPLETED,
-];
-
-function getNextStatus(current: TodoStatus): TodoStatus {
-  const idx = STATUS_CYCLE.indexOf(current);
-  return STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
-}
-
-interface TaskCardProps {
+interface TaskCardProps extends TaskProps {
   todo: Todo;
-  onEdit: (todo: Todo) => void;
-  onDelete: (todo: Todo) => void;
-  onStatusChange: (todo: Todo, status: TodoStatus) => void;
 }
 
 export default function TaskCard({

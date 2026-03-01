@@ -3,6 +3,7 @@ import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Toast } from "primereact/toast";
 import {
   useGetTodosQuery,
   useCreateTodoMutation,
@@ -14,9 +15,16 @@ import { TodoStatus } from "../types/todo.type";
 import type { Todo } from "../types/todo.type";
 import { TODO_STATUS_CONFIG } from "../config/common/todoStatus";
 import TaskList from "../features/tasks/TaskList";
+import TaskTable from "../features/tasks/TaskTable";
 import TaskFormDialog from "../features/tasks/TaskFormDialog";
 import type { TaskFormValues } from "../features/tasks/TaskFormDialog";
-import { Toast } from "primereact/toast";
+
+type ViewMode = "list" | "table";
+
+const VIEW_OPTIONS = [
+  { icon: "pi pi-list", value: "list" },
+  { icon: "pi pi-table", value: "table" },
+];
 
 const FILTER_OPTIONS = [
   { label: "All", value: null },
@@ -37,6 +45,7 @@ export default function Tasks() {
   const [showCreate, setShowCreate] = useState(false);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [statusFilter, setStatusFilter] = useState<TodoStatus | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
 
   const filteredTodos = statusFilter
     ? todos.filter((t) => t.status === statusFilter)
@@ -113,7 +122,7 @@ export default function Tasks() {
 
   return (
     <div className="row justify-content-center mt-2">
-      <div className="col-lg-8 col-md-10">
+      <div className="">
         <ConfirmDialog />
 
         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -130,21 +139,38 @@ export default function Tasks() {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="d-flex justify-content-between w-auto mb-3 align-items-center flex-wrap-reverse gap-4">
           <SelectButton
             value={statusFilter}
             options={FILTER_OPTIONS}
             onChange={(e) => setStatusFilter(e.value as TodoStatus | null)}
             allowEmpty={false}
           />
+          <SelectButton
+            value={viewMode}
+            options={VIEW_OPTIONS}
+            onChange={(e) => setViewMode(e.value as ViewMode)}
+            itemTemplate={(opt) => <i className={opt.icon} />}
+            allowEmpty={false}
+          />
         </div>
 
-        <TaskList
-          todos={filteredTodos}
-          onEdit={setEditingTodo}
-          onDelete={handleDelete}
-          onStatusChange={handleStatusChange}
-        />
+        {viewMode === "list" ? (
+          <TaskList
+            todos={filteredTodos}
+            onEdit={setEditingTodo}
+            onDelete={handleDelete}
+            onStatusChange={handleStatusChange}
+          />
+        ) : (
+          <TaskTable
+            todos={filteredTodos}
+            onEdit={setEditingTodo}
+            onDelete={handleDelete}
+            onStatusChange={handleStatusChange}
+            loading={isLoading}
+          />
+        )}
 
         <TaskFormDialog
           mode="create"

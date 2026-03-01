@@ -1,14 +1,10 @@
 import type { Todo } from "../../types/todo.type";
-import type { TodoStatus } from "../../types/todo.type";
 import TaskCard from "./TaskCard";
+import type { TaskProps } from "./types/task.type";
 
-interface TaskListProps {
+interface TaskListProps extends TaskProps {
   todos: Todo[];
-  onEdit: (todo: Todo) => void;
-  onDelete: (todo: Todo) => void;
-  onStatusChange: (todo: Todo, status: TodoStatus) => void;
 }
-
 export default function TaskList({
   todos,
   onEdit,
@@ -41,4 +37,3 @@ export default function TaskList({
     </div>
   );
 }
-
