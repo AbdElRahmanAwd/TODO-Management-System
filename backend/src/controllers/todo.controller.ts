@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { TodoService } from "../services/todo.service";
+import { AuthRequest } from "../middleware/auth.middleware";
 
 export class TodoController {
   private todoService: TodoService;
@@ -15,43 +16,48 @@ export class TodoController {
     this.delete = this.delete.bind(this);
   }
 
-  async getAll(req: Request, res: Response) {
-    const todos = await this.todoService.getAll();
+  async getAll(req: AuthRequest, res: Response) {
+    const todos = await this.todoService.getAll(req.userId!);
     res.json(todos);
   }
 
-  async getById(req: Request, res: Response) {
+  async getById(req: AuthRequest, res: Response) {
     const { id } = req.params;
-    const todo = await this.todoService.getById(Number(id));
+    const todo = await this.todoService.getById(Number(id), req.userId!);
     if (!todo) return res.status(404).json({ error: "Todo not found" });
     res.json(todo);
   }
 
-  async create(req: Request, res: Response) {
-    const data = req.body;
-    const todo = await this.todoService.create(data);
+  async create(req: AuthRequest, res: Response) {
+    const todo = await this.todoService.create(req.body, req.userId!);
     res.status(201).json(todo);
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: AuthRequest, res: Response) {
     const { id } = req.params;
-    const data = req.body;
-    const todo = await this.todoService.update(Number(id), data);
+    const todo = await this.todoService.update(
+      Number(id),
+      req.body,
+      req.userId!,
+    );
     if (!todo) return res.status(404).json({ error: "Todo not found" });
     res.json(todo);
   }
 
-  async updateStatus(req: Request, res: Response) {
+  async updateStatus(req: AuthRequest, res: Response) {
     const { id } = req.params;
-    const data = req.body;
-    const todo = await this.todoService.updateStatus(Number(id), data);
+    const todo = await this.todoService.updateStatus(
+      Number(id),
+      req.body,
+      req.userId!,
+    );
     if (!todo) return res.status(404).json({ error: "Todo not found" });
     res.json(todo);
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: AuthRequest, res: Response) {
     const { id } = req.params;
-    const deleted = await this.todoService.delete(Number(id));
+    const deleted = await this.todoService.delete(Number(id), req.userId!);
     if (!deleted) return res.status(404).json({ error: "Todo not found" });
     res.json({ message: "Todo deleted" });
   }

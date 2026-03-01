@@ -8,15 +8,15 @@ export class TodoService {
     this.todoRepo = todoRepo;
   }
 
-  getAll() {
-    return this.todoRepo.findAll();
+  getAll(userId: number) {
+    return this.todoRepo.findAll(userId);
   }
 
-  getById(id: number) {
-    return this.todoRepo.findById(id);
+  getById(id: number, userId: number) {
+    return this.todoRepo.findById(id, userId);
   }
 
-  async create(data: todoDto.CreateTodoDto) {
+  async create(data: todoDto.CreateTodoDto, userId: number) {
     const name = data.name?.trim();
 
     if (!name) throw new Error("Task name is required");
@@ -26,10 +26,10 @@ export class TodoService {
       throw new Error("Task name must be at least 2 characters");
 
     const description = data.description?.trim() || undefined;
-    return this.todoRepo.create({ name, description });
+    return this.todoRepo.create({ name, description }, userId);
   }
 
-  async update(id: number, data: todoDto.UpdateTodoDto) {
+  async update(id: number, data: todoDto.UpdateTodoDto, userId: number) {
     const name = data.name?.trim();
 
     if (!name) throw new Error("Task name is required");
@@ -39,14 +39,18 @@ export class TodoService {
       throw new Error("Task name must be at least 2 characters");
 
     const description = data.description?.trim() || undefined;
-    return this.todoRepo.update(id, { ...data, name, description });
+    return this.todoRepo.update(id, { ...data, name, description }, userId);
   }
 
-  async updateStatus(id: number, status: todoDto.UpdateTodoStatusDto) {
-    return this.todoRepo.updateStatus(id, status.status);
+  async updateStatus(
+    id: number,
+    status: todoDto.UpdateTodoStatusDto,
+    userId: number,
+  ) {
+    return this.todoRepo.updateStatus(id, status.status, userId);
   }
 
-  delete(id: number) {
-    return this.todoRepo.delete(id);
+  delete(id: number, userId: number) {
+    return this.todoRepo.delete(id, userId);
   }
 }
