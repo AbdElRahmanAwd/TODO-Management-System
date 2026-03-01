@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "primereact/button";
 import LoginDialog from "../features/auth/LoginDialog";
 import RegisterDialog from "../features/auth/RegisterDialog";
-// import ThemeToggle from "../features/theme/ThemeToggle";
+import ThemeToggle from "../features/theme/ThemeToggle";
 
 export default function Navbar() {
   const [showLogin, setShowLogin] = useState(false);
@@ -22,12 +22,12 @@ export default function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg border-bottom px-4">
         <div className="container-fluid p-1">
-          <a className="navbar-brand " href="/">
-            <img src="/logo.jpg" alt="Logo" width="30" className="me-2" />
+          <a className="navbar-brand" href="/">
+            <img src="/logo.png" alt="Logo" width="30" className="me-2" />
             TODO
           </a>
           <div className="d-flex align-items-center gap-2 ms-auto">
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
             <Button
               label="Login"
               severity="contrast"

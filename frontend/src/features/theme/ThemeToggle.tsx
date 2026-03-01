@@ -11,6 +11,7 @@ export default function ThemeToggle() {
   useEffect(() => {
     const href = mode === "dark" ? "lara-dark-blue" : "lara-light-blue";
     setPrimeTheme(href);
+    document.documentElement.setAttribute("data-bs-theme", mode);
   }, [mode]);
 
   return (
