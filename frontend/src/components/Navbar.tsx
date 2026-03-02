@@ -31,14 +31,16 @@ export default function Navbar() {
             <Button
               label="Login"
               severity="contrast"
-              className="me-2 rounded-pill"
               size="small"
+              rounded
+              raised
               onClick={() => setShowLogin(true)}
             />
             <Button
               label="Register"
-              className="btn-primary rounded-pill"
               size="small"
+              rounded
+              raised
               onClick={() => setShowRegister(true)}
             />
           </div>

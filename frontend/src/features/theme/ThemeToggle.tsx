@@ -19,6 +19,8 @@ export default function ThemeToggle() {
       icon={mode === "dark" ? "pi pi-sun" : "pi pi-moon"}
       text
       size="small"
+      rounded
+      outlined
       onClick={() => dispatch(toggleTheme())}
       aria-label="Toggle theme"
     />

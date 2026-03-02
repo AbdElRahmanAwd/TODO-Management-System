@@ -125,7 +125,7 @@ export default function Tasks() {
       <div className="">
         <ConfirmDialog />
 
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-around align-items-center justify-content-md-between mb-4">
           <h2 className="fw-bold mb-0">
             <i className="pi pi-list-check me-2" />
             My Tasks
@@ -133,8 +133,8 @@ export default function Tasks() {
           <Button
             icon="pi pi-plus"
             label="New Task"
-            className="rounded-pill"
             size="small"
+            rounded
             onClick={() => setShowCreate(true)}
           />
         </div>

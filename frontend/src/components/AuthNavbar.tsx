@@ -23,13 +23,11 @@ export default function AuthNavbar() {
           TODO
         </a>
 
-        <div className="d-flex align-items-center gap-3 ms-auto">
+        <div className="d-flex align-items-center gap-2 ms-auto">
           <ThemeToggle />
-          <div className="d-flex align-items-center gap-2">
-            <span className="fw-semibold d-none d-sm-inline">
-              {user?.name ?? "..."}
-            </span>
-          </div>
+          <span className="fw-semibold d-none d-sm-inline">
+            {user?.name ?? "..."}
+          </span>
           <Button
             icon="pi pi-sign-out"
             label="Logout"

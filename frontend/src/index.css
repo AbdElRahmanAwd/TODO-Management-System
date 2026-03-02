@@ -1,3 +1,6 @@
+/* Declare layer order: primereact wins over bootstrap */
+@layer bootstrap, primereact;
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -60,4 +63,15 @@ body {
   transition:
     background-color 0.2s,
     color 0.2s;
+}
+
+/* ── Button size ── */
+
+.p-button {
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+}
+.p-button-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
 }

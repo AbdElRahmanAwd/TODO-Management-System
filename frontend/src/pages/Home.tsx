@@ -38,7 +38,7 @@ export default function Home() {
         </div>
 
         {/* Add task input */}
-        <div className="d-flex gap-2 mb-4">
+        <div className="d-flex gap-2 mb-4 justify-content-around align-items-center flex-wrap">
           <InputText
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
@@ -49,7 +49,8 @@ export default function Home() {
           <Button
             icon="pi pi-plus"
             label="Add"
-            className="rounded-pill"
+            size="small"
+            rounded
             onClick={handleAdd}
             disabled={!taskName.trim()}
           />

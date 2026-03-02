@@ -5,7 +5,7 @@ import { PrimeReactProvider } from "primereact/api";
 import { store } from "./app/store.ts";
 import App from "./App.tsx";
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/BootStrap.css";
 
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
