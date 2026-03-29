@@ -1,10 +1,12 @@
-import { ITodoRepository } from "../repositories/todo.repo.interface";
+import { inject, injectable } from "inversify";
+import { ITodoRepository } from "../repositories/interfaces/todo.repo.interface";
 import * as todoDto from "../types/todo.dto";
-
+import { TYPES } from "../container/types";
+@injectable()
 export class TodoService {
   private todoRepo: ITodoRepository;
 
-  constructor(todoRepo: ITodoRepository) {
+  constructor(@inject(TYPES.TodoRepository) todoRepo: ITodoRepository) {
     this.todoRepo = todoRepo;
   }
 

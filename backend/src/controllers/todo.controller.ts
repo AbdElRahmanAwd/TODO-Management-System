@@ -1,11 +1,14 @@
+import { inject, injectable } from "inversify";
+import { TYPES } from "../container/types";
 import { Response } from "express";
 import { TodoService } from "../services/todo.service";
 import { AuthRequest } from "../middleware/auth.middleware";
 
+@injectable()
 export class TodoController {
   private todoService: TodoService;
 
-  constructor(todoService: TodoService) {
+  constructor(@inject(TYPES.TodoService) todoService: TodoService) {
     this.todoService = todoService;
 
     this.getAll = this.getAll.bind(this);

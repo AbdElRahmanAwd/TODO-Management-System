@@ -1,11 +1,14 @@
-import { IUserRepository } from "../repositories/user.repo.interface";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../container/types";
+import { IUserRepository } from "../repositories/interfaces/user.repo.interface";
 import { LoginDto, RegisterDto, AuthResponse } from "../types/auth.dto";
 import { hashPassword, verifyPassword, generateToken } from "../utils/auth";
 
+@injectable()
 export class UserService {
   private userRepo: IUserRepository;
 
-  constructor(userRepo: IUserRepository) {
+  constructor(@inject(TYPES.UserRepository) userRepo: IUserRepository) {
     this.userRepo = userRepo;
   }
 

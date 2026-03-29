@@ -1,9 +1,10 @@
+import { injectable } from "inversify";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/data-source";
 import { Todo } from "../entities/todo.entity";
-import { ITodoRepository } from "./todo.repo.interface";
+import { ITodoRepository } from "./interfaces/todo.repo.interface";
 import { TodoStatus } from "../enums/todo-status.enum";
-
+@injectable()
 export class TodoRepository implements ITodoRepository {
   private repo: Repository<Todo>;
 

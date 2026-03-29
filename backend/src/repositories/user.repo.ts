@@ -1,8 +1,10 @@
 import { Repository } from "typeorm";
-import { IUserRepository } from "./user.repo.interface";
+import { IUserRepository } from "./interfaces/user.repo.interface";
 import { User } from "../entities/user.entity";
 import { AppDataSource } from "../config/data-source";
+import { injectable } from "inversify";
 
+@injectable()
 export class UserRepository implements IUserRepository {
   private repo: Repository<User>;
 

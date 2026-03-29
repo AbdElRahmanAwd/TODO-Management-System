@@ -1,5 +1,5 @@
-import { Todo } from "../entities/todo.entity";
-import { TodoStatus } from "../enums/todo-status.enum";
+import { Todo } from "../../entities/todo.entity";
+import { TodoStatus } from "../../enums/todo-status.enum";
 
 export interface ITodoRepository {
   findAll(userId: number): Promise<Todo[]>;

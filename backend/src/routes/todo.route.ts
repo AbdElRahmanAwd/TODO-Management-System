@@ -1,12 +1,10 @@
 import { Router } from "express";
 import { TodoController } from "../controllers/todo.controller";
-import { TodoRepository } from "../repositories/todo.repo";
-import { TodoService } from "../services/todo.service";
+import { TYPES } from "../container/types";
+import { container } from "../container/inversify.config";
 
 const todoRouter = Router();
-const todoRepo = new TodoRepository();
-const todoService = new TodoService(todoRepo);
-const todoController = new TodoController(todoService);
+const todoController = container.get<TodoController>(TYPES.TodoController);
 
 todoRouter.get("/", todoController.getAll);
 todoRouter.get("/:id", todoController.getById);

@@ -1,13 +1,11 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
-import { UserRepository } from "../repositories/user.repo";
-import { UserService } from "../services/user.service";
 import { authMiddleware } from "../middleware/auth.middleware";
+import { container } from "../container/inversify.config";
+import { TYPES } from "../container/types";
 
 const authRouter = Router();
-const userRepo = new UserRepository();
-const userService = new UserService(userRepo);
-const authController = new AuthController(userService);
+const authController = container.get<AuthController>(TYPES.AuthController);
 
 authRouter.post("/register", authController.register);
 authRouter.post("/login", authController.login);

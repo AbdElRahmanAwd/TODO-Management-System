@@ -1,11 +1,14 @@
+import { inject, injectable } from "inversify";
+import { TYPES } from "../container/types";
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import { AuthRequest } from "../middleware/auth.middleware";
 
+@injectable()
 export class AuthController {
   private userService: UserService;
 
-  constructor(userService: UserService) {
+  constructor(@inject(TYPES.UserService) userService: UserService) {
     this.userService = userService;
 
     this.register = this.register.bind(this);
